@@ -1,21 +1,26 @@
 FROM python:3.9-slim as builder
- 
-ENV PYTHONUNBUFFERED=1
- 
+
+ENV PYTHONUNBUFFERED 1
+
 WORKDIR /app
- 
-RUN apt-get update && apt-get install -y libreoffice
- 
+
 COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+
+RUN pip install --no-cache-dir --target=/app/dependencies -r requirements.txt
+
+FROM python:3.9-slim
+
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends libreoffice && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /app/dependencies /usr/local/lib/python3.9/site-packages/
 
 COPY . /app/
 
-FROM gcr.io/distroless/python3
- 
-WORKDIR /app
- 
-COPY --from=builder /app /app
-
 EXPOSE 5001
-CMD ["/usr/local/bin/python", "app.py"]
+
+CMD ["python", "app.py"]
