@@ -20,9 +20,15 @@ def libreoffice_exec():
 def convert_to_pdf(source, timeout=None):
     args = [libreoffice_exec(), '--headless', '--convert-to', 'pdf', '--outdir', CONVERTED_FOLDER, source]
     process = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
-    filename = re.search(r'-> (.*?) using filter', process.stdout.decode())
+    stdout = process.stdout.decode()
+    stderr = process.stderr.decode()
+
+    print("STDOUT:", stdout)  # Log stdout
+    print("STDERR:", stderr)  # Log stderr
+
+    filename = re.search(r'-> (.*?) using filter', stdout)
     if filename is None:
-        raise Exception("Conversion failed: " + process.stdout.decode())
+        raise Exception(f"Conversion failed: {stdout or stderr}")
     return os.path.basename(filename.group(1))
 
 @app.route('/')
