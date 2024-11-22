@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: doc-to-pdf-converter
+  labels:
+    app: doc-to-pdf-converter
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: doc-to-pdf-converter
+  template:
+    metadata:
+      labels:
+        app: doc-to-pdf-converter
+    spec:
+      containers:
+      - name: doc-to-pdf-converter
+        image: jigmetsd/doc-to-pdf-converter:latest
+        ports:
+        - containerPort: 5001

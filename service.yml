@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: doc-to-pdf-converter-service
+  labels:
+    app: doc-to-pdf-converter
+spec:
+  type: LoadBalancer
+  selector:
+    app: doc-to-pdf-converter
+  ports:
+    - protocol: TCP
+      port: 80               # External port to access the service
+      targetPort: 5001       # Port the container listens on

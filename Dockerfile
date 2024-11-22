@@ -22,5 +22,5 @@ COPY --from=builder /app/dependencies /usr/local/lib/python3.9/site-packages/
 COPY . /app/
 
 EXPOSE 5001
-
+ENV HOSTNAME="0.0.0.0"
 CMD ["python", "app.py"]

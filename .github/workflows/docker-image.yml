@@ -29,11 +29,10 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
      
-    - name: Build Docker image
+    - name: Build and Push the Docker image
       run: |
-        docker build -t jigmetsd/doc-to-pdf-converter:latest .
+        docker build -t temp .
+        docker tag temp jigmetsd/doc-to-pdf-converter:latest
+        docker push jigmetsd/doc-to-pdf-converter:latest
 
  
-    - name: Push Docker image
-      run: |
-        docker push jigmetsd/doc-to-pdf-converter:latest

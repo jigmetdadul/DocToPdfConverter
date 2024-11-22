@@ -1,2 +1,4 @@
 .DS_Store
 myenv/
+kubectl
+minikube-darwin-arm64
