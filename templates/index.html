@@ -1,17 +1,146 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File to PDF Converter</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-10px);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        h1 i {
+            color: #764ba2;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-input-label {
+            background: #f4f4f4;
+            border: 2px dashed #764ba2;
+            color: #764ba2;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .file-input-label:hover {
+            background: #f0e6f4;
+        }
+
+        .file-preview {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .submit-btn:disabled {
+            background: #ddd;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
-    <h1>Convert Files to PDF</h1>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <label for="file">Choose a file:</label>
-        <input type="file" id="file" name="file" required>
-        <button type="submit">Upload and Convert</button>
-    </form>
+    <div class="container">
+        <h1><i class="fas fa-file-pdf"></i> Convert Files to PDF</h1>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="file-input-wrapper">
+                <input type="file" id="file" name="file" class="file-input" required>
+                <label for="file" class="file-input-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Choose a file to upload
+                </label>
+                <div class="file-preview" id="filePreview">No file selected</div>
+            </div>
+            <button type="submit" id="submitButton" class="submit-btn" disabled>Upload and Convert</button>
+        </form>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file');
+        const filePreview = document.getElementById('filePreview');
+        const submitButton = document.getElementById('submitButton');
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                filePreview.textContent = `Selected file: ${file.name}`;
+                submitButton.disabled = false;
+            } else {
+                filePreview.textContent = 'No file selected';
+                submitButton.disabled = true;
+            }
+        });
+    </script>
 </body>
 </html>
